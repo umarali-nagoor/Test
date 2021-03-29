@@ -7,15 +7,15 @@ provider "ibm" {
 }
 
 data "ibm_resource_group" "cos_group" {
-  name = var.resource_group
+  name = "Default"
 }
 
 module "cos" {
 
   source = "terraform-ibm-modules/cos/ibm//modules/instance"
 
-  service_name      = var.service_name
+  service_name      = "I1"
   resource_group_id = data.ibm_resource_group.cos_group.id
-  plan              = var.plan
-  region            = var.region
+  plan              = "standard"
+  region            = "us-south"
 }
