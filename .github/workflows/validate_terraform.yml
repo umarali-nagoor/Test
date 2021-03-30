@@ -29,7 +29,7 @@ jobs:
       #  run: find . -type f -name "*.tf" -exec dirname {} \;|sort -u | while read m; do (cd "$m" && echo "$m - plan" && terraform plan -input=false -backend=false) || exit 1; done
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: find . -type f -name "*.tf" -exec dirname {} \;|sort -u | while read m; do (cd "$m" && echo "$m - plan" && terraform plan -input=false -backend=false) || exit 1; done
         continue-on-error: true
       -
         name: terraform validate            # validates the configuration files in a directory
