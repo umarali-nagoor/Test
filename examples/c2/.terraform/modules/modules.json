@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"cos","Source":"terraform-ibm-modules/cos/ibm//modules/instance","Version":"1.2.0","Dir":".terraform/modules/cos/modules/instance"}]}
