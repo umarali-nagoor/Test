@@ -15,24 +15,25 @@ jobs:
           chmod +x /tmp/tfswitch-install.sh
           /tmp/tfswitch-install.sh -b $HOME/.bin
       -
-        name: checkout
+        name: checkout                      # action checks-out your repository under $GITHUB_WORKSPACE, so your workflow can access it.
         uses: actions/checkout@v2
-      #-
-      #  name: get terraform
-      #  run: tfswitch 0.13.0 -b $HOME/.bin/terraform
       -
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v1  # sets up Terraform CLI in your GitHub Actions workflow
         with:
           terraform_version: 0.13.0
       -
-        name: terraform init
+        name: terraform init                # initialize a working directory containing Terraform configuration files.
         run: find . -type f -name "*.tf" -exec dirname {} \;|sort -u | while read m; do (cd "$m" && echo "$m - init" && terraform init -input=false -backend=false) || exit 1; done
       #-
       #  name: terraform plan
       #  run: find . -type f -name "*.tf" -exec dirname {} \;|sort -u | while read m; do (cd "$m" && echo "$m - plan" && terraform plan -input=false -backend=false) || exit 1; done
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        continue-on-error: true
       -
-        name: terraform validate
+        name: terraform validate            # validates the configuration files in a directory
         run: find . -name ".terraform" -prune -o -type f -name "*.tf" -exec dirname {} \;|sort -u | while read m; do (cd "$m" && echo "$m - validate" && terraform validate && echo "√ $m") || exit 1 ; done
       -
-        name: terraform fmt check
+        name: terraform fmt check           # perform format checks
         run: terraform fmt -list=true -write=false -check -recursive
